@@ -1,0 +1,65 @@
+* {
+   font-family: 'Montserrat';
+	margin:0 auto;
+	padding:0;
+
+}
+div {
+    display: block;
+}
+.signup-content {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px 85px;
+    font-family: 'Montserrat';
+    
+}
+h2 {
+    font-family: 'Montserrat';
+    font-size: 24px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    margin-top: 50px;
+}
+
+.form-group {
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.form-input {
+    width: 20%;
+    border: 1px solid #ebebeb;
+    border-radius: 5px;
+    padding: 17px 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 500;
+    color: #222;
+}
+.form-submit {
+    width: 20%;
+    border-radius: 5px;
+    padding: 17px 20px;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    border: none;
+    background-image: linear-gradient(to left, #ba48d6, #9face6);
+    margin-top: 20px;
+}
+.loginhere {
+    color: #555;
+    font-weight: 500;
+    margin-top: 91px;
+    margin-bottom: 10px;
+    font-family: 'Montserrat';
+}
+.agree {
+    margin-top: 10px;
+    
+}
+
+
+ 

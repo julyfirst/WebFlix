@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.webflix.mapper.BoardMapper">
+
+<sql id = "criteria">
+	<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+	   	<foreach item="type" collection="typeArr">
+			<trim prefix="OR">
+				<choose>
+				
+					<when test="type == 'T'.toString()">
+						title like '%' || #{keyword} || '%'
+					</when>
+					
+					<when test="type == 'C'.toString()">
+						content like '%' || #{keyword} || '%'
+					</when>
+					
+					<when test="type == 'W'.toString()">
+						writer like '%' || #{keyword} || '%'
+					</when>
+					
+				</choose>			
+			</trim>    	
+	   	</foreach>
+	</trim>
+</sql>
+
+ <!-- 오름차순 전체 조회 -> 0, 1, 2, 3, 4, 5 순 -->
+  <select id="getList" resultType="com.project.webflix.domain.BoardVO">
+    <![CDATA[
+    	select * from tbl_board where bno > 0
+    ]]>
+  </select>
+  
+ <!-- 전체 데이터 개수처리  -->
+  <select id="getTotalCount" resultType="int">
+    <![CDATA[
+    	select count(*)from tbl_board where bno > 0
+    ]]>
+  </select>
+  
+  
+ <!-- 페이지 처리-->
+  <select id="getListWithPaging" resultType="com.project.webflix.domain.BoardVO">
+    <![CDATA[
+    	select
+    		bno, title, content, writer, regdate, updatedate, replycnt
+    	from
+    	(select /*+INDEX_DESC(tbl_board pk_board) */
+    			rownum rn, bno, title, content, writer, regdate, updatedate, replycnt
+    		from
+    			tbl_board
+    		where
+    ]]>
+    <include refid="criteria"></include>
+    <![CDATA[
+	     rownum <= #{pageNum} * #{amount}
+	    	)
+	    	where rn > (#{pageNum} -1) * #{amount}
+    ]]>
+  </select>
+  
+  <!-- 삽입(추가) -->
+  <insert id="insert">
+    <![CDATA[
+	  	insert into tbl_board(bno,title,content,writer)
+	  	values(seq_board.nextval, #{title}, #{content}, #{writer})
+  	]]>
+  </insert>
+  
+  <!-- 삽입(추가) 미리 seq를 실행시킨후 추가 -->
+  <insert id="insertSelectKey">
+  	<selectKey keyProperty="bno" order="BEFORE" resultType="long">
+  	  <![CDATA[
+	  	select seq_board.nextval from dual
+	  ]]>
+  	</selectKey>
+  	insert into tbl_board(bno,title,content,writer)
+  	values(#{bno}, #{title}, #{content}, #{writer})
+  </insert>
+  
+  <!-- 특정번호로 조회 -->
+  <select id="read" resultType="com.project.webflix.domain.BoardVO">
+   <![CDATA[
+   	select * from tbl_board where bno = #{bno}
+   ]]>
+  </select>
+  
+  <!-- 삭제 -->
+  <delete id="delete">
+   <![CDATA[
+	delete from tbl_board where bno = #{bno}
+   ]]>
+  </delete>
+
+	<!-- 수정 -->
+	<update id="update">
+	<!-- regdate 칼럼은 최초생성시간이므로 건드리지 않음 -->
+		update tbl_board
+		set title = #{title},
+		content = #{content},
+		writer = #{writer},
+		updateDate =sysdate
+		where bno = #{bno}
+	</update>
+	
+	<!-- 댓글이 추가되면 tbl_board테이블에 replycnt 칼럼이 업데이트 되기 떄문에 updateReplyCnt생성 -->
+	<update id="updateReplyCnt">
+		update tbl_board set replycnt = replycnt + #{amount} where bno = #{bno}
+	</update>
+  
+  
+</mapper>

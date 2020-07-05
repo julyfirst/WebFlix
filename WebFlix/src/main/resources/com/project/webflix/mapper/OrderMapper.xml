@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.webflix.mapper.OrderMapper">
+	<!-- 주문테이블 ,
+		주문번호, 영화코드, 회원번호, 구매일자, 가격, 다운로드
+		 -->
+	<resultMap type="com.project.webflix.domain.OrderDTO" id="orderDTO">
+		<id property ="id" column = "id"/>
+		<result property="movie_id" column = "movie_id"/>
+		<result property="member_id" column = "member_id"/>
+		<result property="purchase_date" column = "purchase_date"/>
+		<result property="deal_price" column = "deal_price"/>
+		<result property="delivery_complete" column = "delivery_complete"/>
+		<!-- 1 : 1 관계일 때 사용합니다. -->
+		<association property="member" 
+				   resultMap="com.project.webflix.mapper.MemberMapper.memberMap" 
+				   columnPrefix="mem_"></association>
+		<association property="movie" 
+				   resultMap="com.project.webflix.mapper.MovieMapper.movieMap" 
+				   columnPrefix="mov_"></association>
+	</resultMap>
+	
+ 	 <!-- 전체구매목록 보기 --> 
+	<select id = "getAllList" resultMap="orderDTO">
+		<![CDATA[
+		 select
+			o.id,
+			mov.movie_id mov_id,
+			mem.id mem_id, mem.userid mem_userid,
+			mov.movie_name mov_movie_name, mov.movie_genre mov_movie_genre,
+			o.deal_price, o.purchase_date, o.delivery_complete
+		from 
+			tbl_order o, tbl_member mem, tbl_movie mov
+		where 
+		  o.movie_id = mov.movie_id
+		  and mem.id = o.member_id
+		order by o.id
+		]]>		
+	</select>
+	
+ 	<!-- 구매목록 보기 -->
+	<select id = "getList" resultMap="orderDTO">
+		<![CDATA[
+		select
+			o.id,
+			mov.movie_id mov_id,
+			mem.id mem_id, mem.userid mem_userid,
+			mov.movie_name mov_movie_name, mov.movie_genre mov_movie_genre,
+			o.deal_price, o.purchase_date, o.delivery_complete
+		from 
+			tbl_order o, tbl_member mem, tbl_movie mov
+		where mem.id = #{id}
+		  and o.movie_id = mov.movie_id
+		  and mem.id = o.member_id
+		order by o.id
+		]]>		
+	</select>
+ 
+	<!-- 삽입(영화구매추가) -->
+	<insert id="insert">
+		<selectKey keyProperty="id" order="BEFORE" resultType="long">
+	     <![CDATA[
+	      select seq_order.nextval from dual
+	   	]]>
+	   	</selectKey>
+			insert into tbl_order(id, movie_id, member_id,  deal_price)
+			values(#{id}, #{movie_id}, #{member_id}, #{deal_price})
+	</insert>
+ 	
+	 <!-- 삭제 -->
+	<delete id="delete">
+		<![CDATA[
+			delete from tbl_order where id= #{id}
+		 ]]>
+	</delete>
+
+</mapper>
+
