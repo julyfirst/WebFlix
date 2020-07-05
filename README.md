@@ -14,6 +14,15 @@ Web_Flix는 **웹(Web)과 영화(flicks)를 합성어로 웹 페이지에서 영
 웹플릭스는 다양한 장르(액션, 멜로, 공포, 에니메이션)등 영화 정보(줄거리, 예고편, 출연진)을 볼 수 
 있고 다운로드버튼을 클릭하여 해당영화를 다운을 받을 수 있습니다.
 ```
+## :desktop_computer: DataBase(Oracle) 
+**ERD**
+
+![erd](./erd.JPG)
+
+**Class-Diagram**
+
+![class](./class.JPG)
+
 ## :gear: Function
 
 **보안(Security)**
@@ -57,12 +66,3 @@ Web_Flix는 **웹(Web)과 영화(flicks)를 합성어로 웹 페이지에서 영
 - 모든 사용자는 게시물에 쓰여진 댓글을 읽을 수 있고, 로그인 한 사용자는 댓글 작성하고 
   자신의 댓글에 대해 수정 삭제 할 수 있습니다.
 ```
-## :desktop_computer: DataBase(Oracle) 
-**ERD**
-
-![erd](./erd.JPG)
-
-**Class-Diagram**
-
-![class](./class.JPG)
-
