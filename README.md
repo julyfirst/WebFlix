@@ -19,8 +19,9 @@ Web_Flix는 **웹(Web)과 영화(flicks)를 합성어로 웹 페이지에서 영
 ## :gear: Function
 
 **보안(Security)**
+```
 - Spring Web Security를 이용한 로그인, 자동로그인(세션유지), 접근제한설정, csrf 공격방지
-
+```
 **계정**
 
 - 계정 관한은 "ROLE_ADMIN"(관리자), "ROLE_MEMBER"(회원) 이 있습니다.
