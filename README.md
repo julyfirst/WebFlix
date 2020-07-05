@@ -53,5 +53,5 @@ Web_Flix는 **웹(Web)과 영화(flicks)를 합성어로 웹 페이지에서 영
 ## :desktop_computer: DataBase(Oracle) 
 **ERD**
 
-![ERD](./docs/images/ERD.PNG)
+![erd](./erd.JPG)
 
