@@ -77,8 +77,18 @@
 			<sec:authorize access="isAuthenticated()">
 			<a href="/sp/memberList"
 				class="dropbtn">회원정보</a></sec:authorize>
-				<div class="dropdown-content"></div></li>			
-				<li style="float: right"><a href="./customLogin">로그인</a></li>			
-			<li style="float: right"><a href="./sp/signUp">회원가입</a></li>
+				<div class="dropdown-content"></div></li>
+				
+					<sec:authorize access="isAnonymous()">
+						<li style="float: right"><a href="./customLogin">로그인</a></li>	
+					</sec:authorize>
+					
+					<sec:authorize access="isAuthenticated()">
+						<li style="float: right"><a href="./customLogout">로그아웃</a></li>							
+					</sec:authorize>
+						
+			<sec:authorize access="isAnonymous()">		
+				<li style="float: right"><a href="./sp/signUp">회원가입</a></li>
+			</sec:authorize>
 		</ul>
 	</div>
