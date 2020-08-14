@@ -6,38 +6,54 @@
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	
+
 
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-<!-- 
+		<!-- <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" 
+			/> <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl" 
+			/> -->
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="jdbcUrl"
+			value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />
+		<property name="username" value="scott" />
+		<property name="password" value="1234" />
+	</bean>
 
-	    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-	    <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl" />
- -->
- 	    <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
- 	    <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl" />
-	    <property name="username" value="scott" />
-	    <property name="password" value="1234" />	       
-	</bean>
-	
-	<!-- HikartiCp configuration  -->
+	<!-- HikartiCp configuration -->
 	<!-- Mybatis 셋팅 -->
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-	    <constructor-arg ref="hikariConfig" />
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+		destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
 	</bean>
-	
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<!-- scan 순서를 왜 이 순서로 할까
-	p86 상단 그림에서 유추되는 것은 객체 생성 이후에 inject 시키는 것으로 보인다.
-	그런데 setter injection은 문제없이 마지막 단계에서 처리될 듯 보여 scan순서와는 무관할 것으로 보이는데,
-	생성자 주입을 할 경우에는 인자 객체가 먼저 만들어져 있어야지 해당 객체를 만들 수 있다.
-	따라서 이런 경우에는 scan 순서에 신경 써야 한다. -->
-	
+
+	<!-- scan 순서를 왜 이 순서로 할까 p86 상단 그림에서 유추되는 것은 객체 생성 이후에 inject 시키는 것으로 보인다. 
+		그런데 setter injection은 문제없이 마지막 단계에서 처리될 듯 보여 scan순서와는 무관할 것으로 보이는데, 생성자 주입을 
+		할 경우에는 인자 객체가 먼저 만들어져 있어야지 해당 객체를 만들 수 있다. 따라서 이런 경우에는 scan 순서에 신경 써야 한다. -->
+
 	<!-- <context:component-scan base-package="com.project.webflix.service"></context:component-scan> -->
-	<mybatis-spring:scan base-package="com.project.webflix.mapper"/>
+	<mybatis-spring:scan
+		base-package="com.project.webflix.mapper" />
+
+	<!-- Gmail -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="해당이메일" />
+		<property name="password" value="비번입력" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+
 </beans>
