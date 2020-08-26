@@ -107,7 +107,7 @@ create table tbl_member(
 	updatedate date default sysdate, -- 수정일
 	enabled char(1) default '1' -- 계정사용여부
 );
--- 인증 관련된 테이블 근데 수정해야됨 잘못 됬음 일단 이걸로 하세용..
+-- 인증 관련된 테이블 
 create table tbl_member_authorities(
 	id 	number(10) not null,
 	userid varchar2(50) not null,
@@ -183,6 +183,25 @@ create table tbl_order(
 alter table tbl_board add(replycnt number default 0);
 -- 기존에 댓글이 존재했다면 replyCnt에 반영해 두어야 하므로 아래쿼리 실행        
 update tbl_board set replycnt = (select count(rno) from tbl_reply where tbl_reply.bno = tbl_board.bno);
+
+
+insert into tbl_board(bno, title, content, writer)
+values(seq_board.nextval, '안녕하세요', '테스트 내용', '이순신');
+
+insert into tbl_board(bno, title, content, writer)
+values(seq_board.nextval, '영화추천', '영화 뭐가 재밌나요?', '이상현');
+
+insert into tbl_board(bno, title, content, writer)
+values(seq_board.nextval, '예고편', '예고편이 뭘까', '세종대왕');
+
+insert into tbl_board(bno, title, content, writer)
+values(seq_board.nextval, '자유게시판 테스트', '자유게시판 테스트', '김유신');
+
+insert into tbl_board(bno, title, content, writer)
+values(seq_board.nextval, '반가워용', '반가워용 테스트', '나친절');
+
+
+
 
 
   
